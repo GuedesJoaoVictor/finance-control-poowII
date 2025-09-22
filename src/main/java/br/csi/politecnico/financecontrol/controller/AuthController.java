@@ -1,5 +1,6 @@
 package br.csi.politecnico.financecontrol.controller;
 
+import br.csi.politecnico.financecontrol.dto.LoginFormDTO;
 import br.csi.politecnico.financecontrol.model.User;
 import br.csi.politecnico.financecontrol.repository.UserRepository;
 import br.csi.politecnico.financecontrol.security.JwtUtil;
@@ -30,10 +31,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    public String login(@RequestBody LoginFormDTO loginFormDTO) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginFormDTO.getEmail(), loginFormDTO.getPassword()));
 
-        return jwtUtil.generateToken(username);
+        return jwtUtil.generateToken(loginFormDTO.getEmail());
     }
 
     @PostMapping("/register")
