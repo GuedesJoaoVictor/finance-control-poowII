@@ -16,9 +16,30 @@ public class BankService {
     }
 
     public String create(BankDTO dto) {
-        Bank alreadyExists = bankRepository.findBankByName(dto.getName()).
-                orElseThrow(() -> new BadRequestException("Banco já existe na nossa base."));
+        Bank bank = bankRepository.findBankByName(dto.getName()).orElse(null);
+        if (bank != null) {
+            throw new BadRequestException("O banco já existe");
+        }
+        if (validateInputsBank(dto)) {
+            throw new BadRequestException("Os campos devem ser preenchidos");
+        }
 
-        return "Created";
+        bank = Bank.builder()
+                .name(dto.getName())
+                .type(dto.getType())
+                .build();
+        bankRepository.saveAndFlush(bank);
+
+        return "Banco criado com sucesso";
+    }
+
+    private boolean validateInputsBank(BankDTO dto) {
+        if (dto.getName() == null || dto.getType() == null) {
+            return true;
+        }
+        if (dto.getName().isEmpty() || dto.getType().isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }

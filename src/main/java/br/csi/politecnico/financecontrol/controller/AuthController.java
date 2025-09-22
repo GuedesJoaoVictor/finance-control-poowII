@@ -4,19 +4,13 @@ import br.csi.politecnico.financecontrol.dto.LoginFormDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.User;
-import br.csi.politecnico.financecontrol.repository.UserRepository;
-import br.csi.politecnico.financecontrol.security.JwtUtil;
 import br.csi.politecnico.financecontrol.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/auth")
