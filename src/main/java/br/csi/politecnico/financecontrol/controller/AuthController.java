@@ -1,6 +1,8 @@
 package br.csi.politecnico.financecontrol.controller;
 
 import br.csi.politecnico.financecontrol.dto.LoginFormDTO;
+import br.csi.politecnico.financecontrol.exception.BadRequestException;
+import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.User;
 import br.csi.politecnico.financecontrol.repository.UserRepository;
 import br.csi.politecnico.financecontrol.security.JwtUtil;
@@ -20,21 +22,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
     private final AuthService authService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, AuthService authService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginFormDTO loginFormDTO) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginFormDTO.getEmail(), loginFormDTO.getPassword()));
-
-        return jwtUtil.generateToken(loginFormDTO.getEmail());
+    public ResponseEntity<String> login(@RequestBody LoginFormDTO loginFormDTO) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginFormDTO));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @PostMapping("/register")
