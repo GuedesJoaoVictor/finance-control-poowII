@@ -3,15 +3,9 @@ package br.csi.politecnico.financecontrol.model;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -30,6 +24,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @UuidGenerator
+    @Column(columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
     private UUID uuid;
     private String cpf;
     private String name;
