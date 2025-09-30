@@ -27,7 +27,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @Operation(description = "Faz o login do usuário na plataforma")
+    @Operation(summary = "Loga o usuário via token", description = "Faz o login do usuário na plataforma")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna o token de login"),
             @ApiResponse(responseCode = "404", description = "Usuário não existe"),
@@ -47,7 +47,7 @@ public class AuthController {
         }
     }
 
-    @Operation(description = "Registra usuários no banco de dados")
+    @Operation(summary = "Registrar usuário", description = "Registra usuários no banco de dados")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuário cadastado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Usuário já existente"),
