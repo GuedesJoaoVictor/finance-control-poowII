@@ -5,6 +5,9 @@ import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.User;
 import br.csi.politecnico.financecontrol.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,13 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @Operation(description = "Faz o login do usuário na plataforma")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna o token de login"),
+            @ApiResponse(responseCode = "404", description = "Usuário não existe"),
+            @ApiResponse(responseCode = "400", description = "Senha incorreta"),
+            @ApiResponse(responseCode = "500", description = "Corpo do erro")
+    })
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginFormDTO loginFormDTO) {
         try {
