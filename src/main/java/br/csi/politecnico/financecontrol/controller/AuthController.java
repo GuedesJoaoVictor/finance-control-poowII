@@ -47,6 +47,12 @@ public class AuthController {
         }
     }
 
+    @Operation(description = "Registra usuários no banco de dados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuário cadastado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Usuário já existente"),
+            @ApiResponse(responseCode = "400", description = "Mensagem do erro"),
+    })
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
         try {
