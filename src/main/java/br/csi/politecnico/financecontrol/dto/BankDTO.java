@@ -2,8 +2,7 @@ package br.csi.politecnico.financecontrol.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

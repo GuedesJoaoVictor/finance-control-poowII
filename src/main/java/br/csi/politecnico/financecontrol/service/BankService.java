@@ -2,9 +2,14 @@ package br.csi.politecnico.financecontrol.service;
 
 import br.csi.politecnico.financecontrol.dto.BankDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
+import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.repository.BankRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class BankService {
@@ -41,5 +46,24 @@ public class BankService {
             return true;
         }
         return false;
+    }
+
+    public List<BankDTO> findAll() {
+        List<Bank> banks = bankRepository.findAll();
+        List<BankDTO> dtos = new ArrayList<>();
+        if (banks.isEmpty()) {
+            throw new NotFoundException("Nenhum banco encontrado.");
+        }
+
+        for (Bank bank : banks) {
+            BankDTO dto = BankDTO.builder()
+                    .id(bank.getId())
+                    .name(bank.getName())
+                    .type(bank.getType())
+                    .build();
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 }
