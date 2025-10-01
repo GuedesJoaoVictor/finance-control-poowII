@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BankService {
@@ -65,5 +66,29 @@ public class BankService {
         }
 
         return dtos;
+    }
+
+    public BankDTO findById(Long id) {
+        Optional<Bank> bank = bankRepository.findById(id);
+        if (bank.isPresent()) {
+            Bank bankEntity = bank.get();
+            return BankDTO.builder()
+                    .id(bankEntity.getId())
+                    .name(bankEntity.getName())
+                    .type(bankEntity.getType())
+                    .build();
+        }
+
+        throw new NotFoundException("Nenhum banco encontrado.");
+    }
+
+    public String deleteById(Long id) {
+        Bank bank = bankRepository.findById(id).orElse(null);
+        if (bank == null) {
+            throw new NotFoundException("Nenhum banco encontrado.");
+        }
+
+        bankRepository.delete(bank);
+        return "Banco excluido com sucesso";
     }
 }
