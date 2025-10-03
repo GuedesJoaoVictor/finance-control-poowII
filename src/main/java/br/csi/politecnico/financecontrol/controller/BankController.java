@@ -35,9 +35,9 @@ public class BankController {
     @GetMapping("/find-all")
     public ResponseEntity<List<BankDTO>> findAllBanks() {
         try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(bankService.findAll());
+            return ResponseEntity.status(HttpStatus.OK).body(bankService.findAll());
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Collections.emptyList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -47,7 +47,7 @@ public class BankController {
     @GetMapping("/{id}")
     public ResponseEntity<BankDTO> findBankById(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(bankService.findById(id));
+            return ResponseEntity.status(HttpStatus.OK).body(bankService.findById(id));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
