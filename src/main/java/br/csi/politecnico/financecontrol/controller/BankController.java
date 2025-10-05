@@ -59,16 +59,16 @@ public class BankController {
         }
     }
 
-//    @PutMapping
-//    public ResponseEntity<ResponseDTO<Bank>> updateBank(@RequestBody BankDTO dto) {
-//        try {
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    @PatchMapping("/update-by-id/{id}")
+    public ResponseEntity<ResponseDTO<BankDTO>> updateBank(@RequestBody BankDTO dto, @PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Atualizado com sucesso!", bankService.update(id, dto)));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete-by-id/{id}")
     public ResponseEntity<String> deleteBankById(@PathVariable("id") Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(bankService.deleteById(id));

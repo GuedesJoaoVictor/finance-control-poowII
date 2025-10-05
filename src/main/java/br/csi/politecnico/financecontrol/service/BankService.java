@@ -92,4 +92,19 @@ public class BankService {
         return "Banco excluido com sucesso";
     }
 
+    public BankDTO update(Long id, BankDTO dto) {
+        Bank bank = bankRepository.findById(id).orElse(null);
+        if (bank == null) {
+            throw new NotFoundException("Nenhum banco encontrado.");
+        }
+        bank.setName(dto.getName());
+        bank.setType(dto.getType());
+        bankRepository.saveAndFlush(bank);
+
+        return BankDTO.builder()
+                .name(bank.getName())
+                .type(bank.getType())
+                .build();
+    }
+
 }
