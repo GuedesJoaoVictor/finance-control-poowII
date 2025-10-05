@@ -1,7 +1,10 @@
 package br.csi.politecnico.financecontrol.controller;
 
 import br.csi.politecnico.financecontrol.dto.BankDTO;
+import br.csi.politecnico.financecontrol.dto.ResponseDTO;
+import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
+import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.service.BankService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,36 +26,47 @@ public class BankController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createBank(@RequestBody BankDTO dto) {
+    public ResponseEntity<ResponseDTO<String>> createBank(@RequestBody BankDTO dto) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(bankService.create(dto));
+            return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok(bankService.create(dto)));
+        } catch (BadRequestException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(ex.getMessage()));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
         }
     }
 
     @GetMapping("/find-all")
-    public ResponseEntity<List<BankDTO>> findAllBanks() {
+    public ResponseEntity<ResponseDTO<List<BankDTO>>> findAllBanks() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(bankService.findAll());
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(bankService.findAll()));
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BankDTO> findBankById(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseDTO<BankDTO>> findBankById(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(bankService.findById(id));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(bankService.findById(id)));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
         }
     }
+
+//    @PutMapping
+//    public ResponseEntity<ResponseDTO<Bank>> updateBank(@RequestBody BankDTO dto) {
+//        try {
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBankById(@PathVariable("id") Long id) {
