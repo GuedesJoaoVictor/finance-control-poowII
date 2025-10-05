@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RestController
@@ -51,6 +52,28 @@ public class CategoryController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok("Categoria criada com sucesso!", service.createByUserUuid(uuid, dto)));
         } catch (BadRequestException | EntityExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/delete-by-id/{id}")
+    public ResponseEntity<ResponseDTO<Boolean>> deleteById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Deletado com sucesso!", service.deleteById(id)));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
+        }
+    }
+
+    @PatchMapping("/update-by-id/{id}")
+    public ResponseEntity<ResponseDTO<CategoryDTO>> updateById(@PathVariable("id") Long categoryId, @RequestBody CategoryDTO dto) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Atualizado com sucesso!", service.updateById(categoryId, dto)));
+        } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));

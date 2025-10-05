@@ -56,7 +56,6 @@ public class CategoryService {
         for (Category category : categories) {
             list.add(CategoryDTO.builder()
                     .id(category.getId())
-                    .user(new UserDTO(category.getUser()))
                     .name(category.getName())
                     .type(category.getType())
                     .build());
@@ -82,6 +81,25 @@ public class CategoryService {
         dto.setUser(new  UserDTO(user));
 
         return dto;
+    }
+
+    public Boolean deleteById(Long id) {
+        Category category = categoryRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
+
+        categoryRepository.deleteById(category.getId());
+        return true;
+    }
+
+    public CategoryDTO updateById(Long id, CategoryDTO dto) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Categoria não encontrada."));
+
+        category.setName(dto.getName());
+        category.setType(dto.getType());
+        categoryRepository.saveAndFlush(category);
+
+        return new CategoryDTO(category);
     }
 
 }
