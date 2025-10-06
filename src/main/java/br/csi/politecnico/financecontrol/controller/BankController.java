@@ -4,7 +4,6 @@ import br.csi.politecnico.financecontrol.dto.BankDTO;
 import br.csi.politecnico.financecontrol.dto.ResponseDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
-import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.service.BankService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
