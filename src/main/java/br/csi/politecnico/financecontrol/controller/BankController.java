@@ -4,18 +4,25 @@ import br.csi.politecnico.financecontrol.dto.BankDTO;
 import br.csi.politecnico.financecontrol.dto.ResponseDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
+import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.service.BankService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @Controller
 @RequestMapping("/bank")
 @RestController
+@Tag(name = "Bank", description = "Controller dedicado as operações relacionadas ao banco.")
 public class BankController {
 
     private final BankService bankService;
@@ -25,6 +32,12 @@ public class BankController {
     }
 
     @PostMapping
+    @Operation(summary = "Cira um novo banco", description = "Recebe um DTO e cria o banco na base.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Banco criado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bank.class))),
+            @ApiResponse(responseCode = "400", description = "Banco já existe", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Mensagem do erro", content = @Content)
+    })
     public ResponseEntity<ResponseDTO<String>> createBank(@RequestBody BankDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok(bankService.create(dto)));
@@ -37,6 +50,12 @@ public class BankController {
     }
 
     @GetMapping("/find-all")
+    @Operation(summary = "Busca todos os bancos cadastrados", description = "Devolve uma lista de todos os bancos cadastrados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de bancos", content = @Content(mediaType = "application/json", schema = @Schema(implementation = List.class))),
+            @ApiResponse(responseCode = "204", description = "Sem bancos cadastrados.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor, mensagem do erro", content = @Content)
+    })
     public ResponseEntity<ResponseDTO<List<BankDTO>>> findAllBanks() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(bankService.findAll()));
@@ -48,10 +67,18 @@ public class BankController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find-by-id/{id}")
+    @Operation(summary = "Busca o banco por id", description = "Retorna um DTO do banco buscado por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna um DTO do banco", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bank.class))),
+            @ApiResponse(responseCode = "404", description = "Banco não encontrado."),
+            @ApiResponse(responseCode = "500", description = "Erro interno do banco")
+    })
     public ResponseEntity<ResponseDTO<BankDTO>> findBankById(@PathVariable("id") Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(bankService.findById(id)));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseDTO.err(e.getMessage()));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
@@ -59,15 +86,30 @@ public class BankController {
     }
 
     @PatchMapping("/update-by-id/{id}")
+    @Operation(summary = "Atualiza o banco pelo ID", description = "Recebe um DTO e o ID pela url para atualizar o banco.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atualizado com sucesso!", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bank.class))),
+            @ApiResponse(responseCode = "404", description = "Nenhum banco encontrado.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor, mensagem do erro", content = @Content)
+    })
     public ResponseEntity<ResponseDTO<BankDTO>> updateBank(@RequestBody BankDTO dto, @PathVariable("id") Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Atualizado com sucesso!", bankService.update(id, dto)));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseDTO.err(e.getMessage()));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
         }
     }
 
     @DeleteMapping("/delete-by-id/{id}")
+    @Operation(summary = "Deleta o banco pelo ID", description = "Recebe o id pela url e deleta caso exista")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Banco excluido com sucesso!", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Banco não encontrado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content)
+    })
     public ResponseEntity<String> deleteBankById(@PathVariable("id") Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(bankService.deleteById(id));

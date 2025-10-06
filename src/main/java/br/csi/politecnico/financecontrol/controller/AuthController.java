@@ -8,6 +8,7 @@ import br.csi.politecnico.financecontrol.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 @RequestMapping("/auth")
 @RestController
+@Tag(name = "Auth", description = "Controller relacionado a registro, login e logout.")
 public class AuthController {
 
     private final AuthService authService;

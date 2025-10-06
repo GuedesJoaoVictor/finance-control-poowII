@@ -6,6 +6,7 @@ import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.EntityExistsException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Controller
 @RestController
 @RequestMapping("/category")
+@Tag(name = "Category", description = "Controller relacionado as operações de categoria")
 public class CategoryController {
 
     private final CategoryService service;
