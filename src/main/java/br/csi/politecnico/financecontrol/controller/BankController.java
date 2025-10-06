@@ -7,6 +7,8 @@ import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.service.BankService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,6 +35,7 @@ public class BankController {
 
     @PostMapping
     @Operation(summary = "Cira um novo banco", description = "Recebe um DTO e cria o banco na base.")
+    @Parameter(name = "dto", description = "Nome e tipo do banco", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Banco criado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bank.class))),
             @ApiResponse(responseCode = "400", description = "Banco já existe", content = @Content),
@@ -69,6 +72,7 @@ public class BankController {
 
     @GetMapping("/find-by-id/{id}")
     @Operation(summary = "Busca o banco por id", description = "Retorna um DTO do banco buscado por ID")
+    @Parameter(name = "id", description = "ID do banco", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna um DTO do banco", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bank.class))),
             @ApiResponse(responseCode = "404", description = "Banco não encontrado."),
@@ -87,6 +91,10 @@ public class BankController {
 
     @PatchMapping("/update-by-id/{id}")
     @Operation(summary = "Atualiza o banco pelo ID", description = "Recebe um DTO e o ID pela url para atualizar o banco.")
+    @Parameters(value = {
+            @Parameter(name = "id", description = "ID do banco", required = true),
+            @Parameter(name = "dto", description = "Nome do banco e tipo do banco a ser atualizado", required = true)
+    })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atualizado com sucesso!", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bank.class))),
             @ApiResponse(responseCode = "404", description = "Nenhum banco encontrado.", content = @Content),
@@ -105,6 +113,7 @@ public class BankController {
 
     @DeleteMapping("/delete-by-id/{id}")
     @Operation(summary = "Deleta o banco pelo ID", description = "Recebe o id pela url e deleta caso exista")
+    @Parameter(name = "id", description = "ID do banco", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Banco excluido com sucesso!", content = @Content),
             @ApiResponse(responseCode = "404", description = "Banco não encontrado", content = @Content),

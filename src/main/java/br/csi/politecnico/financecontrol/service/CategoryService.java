@@ -71,6 +71,9 @@ public class CategoryService {
         if (category != null) {
             throw new EntityExistsException("Categoria já existe.");
         }
+        if (dto.getName() == null || dto.getName().isEmpty() || dto.getType() == null || dto.getType().isEmpty()) {
+            throw new BadRequestException("Campos inválidos.");
+        }
         Category newCategory = Category.builder()
                 .user(user)
                 .name(dto.getName())

@@ -6,6 +6,7 @@ import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.User;
 import br.csi.politecnico.financecontrol.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +31,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Loga o usuário via token", description = "Faz o login do usuário na plataforma")
+    @Parameter(name = "loginFormDTO", description = "Email e senha do usuário", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna o token de login"),
             @ApiResponse(responseCode = "404", description = "Usuário não existe"),
@@ -50,6 +52,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Registrar usuário", description = "Registra usuários no banco de dados")
+    @Parameter(name = "user", description = "Cpf, nome, email e senha do usuário", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuário cadastado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Usuário já existente"),
