@@ -31,9 +31,9 @@ public class UserBank {
     private Long id;
     @Schema(description = "Nome do vínculo", example = "Conta corrente banco do brasil")
     private String name;
-    @Column(name = "initial_balance", precision = 15, scale = 2)
+    @Column(name = "total_amount", precision = 15, scale = 2)
     @Schema(description = "Valor inicial do vinculo", example = "1000.00")
-    private BigDecimal initialBalance;
+    private BigDecimal totalAmount;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     @Schema(description = "Usuário do vínculo", example = "Guedes")
