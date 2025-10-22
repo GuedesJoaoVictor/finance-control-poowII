@@ -2,6 +2,7 @@ package br.csi.politecnico.financecontrol.controller;
 
 import br.csi.politecnico.financecontrol.dto.BankDTO;
 import br.csi.politecnico.financecontrol.dto.ResponseDTO;
+import br.csi.politecnico.financecontrol.dto.UserBankDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.Bank;
@@ -130,4 +131,27 @@ public class BankController {
         }
     }
 
+    @PostMapping("/vinculate/by/user/{uuid}")
+    public ResponseEntity<ResponseDTO<UserBankDTO>> vinculateUserBank(@PathVariable String uuid, @RequestBody UserBankDTO dto) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok("Vinculado com sucesso!", bankService.vinculateUserBank(uuid, dto)));
+        } catch (BadRequestException | NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/delete/user-bank/by/{id}")
+    public ResponseEntity<ResponseDTO<Boolean>> deleteUserBankById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Deletado com sucesso!", bankService.deleteUserBankById(id)));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
+        }
+    }
 }

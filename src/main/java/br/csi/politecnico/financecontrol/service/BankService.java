@@ -1,24 +1,30 @@
 package br.csi.politecnico.financecontrol.service;
 
 import br.csi.politecnico.financecontrol.dto.BankDTO;
+import br.csi.politecnico.financecontrol.dto.UserBankDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.Bank;
+import br.csi.politecnico.financecontrol.model.User;
+import br.csi.politecnico.financecontrol.model.UserBank;
 import br.csi.politecnico.financecontrol.repository.BankRepository;
+import br.csi.politecnico.financecontrol.repository.UserBankRepository;
+import br.csi.politecnico.financecontrol.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BankService {
 
     private final BankRepository bankRepository;
+    private final UserRepository userRepository;
+    private final UserBankRepository userBankRepository;
 
-    public BankService(BankRepository bankRepository) {
+    public BankService(BankRepository bankRepository, UserRepository userRepository, UserBankRepository userBankRepository) {
         this.bankRepository = bankRepository;
+        this.userRepository = userRepository;
+        this.userBankRepository = userBankRepository;
     }
 
     public String create(BankDTO dto) {
@@ -105,6 +111,38 @@ public class BankService {
                 .name(bank.getName())
                 .type(bank.getType())
                 .build();
+    }
+
+    public UserBankDTO vinculateUserBank(String uuidUsuario, UserBankDTO dto) {
+        User user = userRepository.findByUuid(UUID.fromString(uuidUsuario)).orElse(null);
+        if (user == null) {
+            throw new NotFoundException("Usuário não encontrado.");
+        }
+        Bank bank = bankRepository.findById(dto.getBank().getId()).orElse(null);
+        if (bank == null) {
+            throw new NotFoundException("Banco não encontrado.");
+        }
+        UserBank alreadyExists = userBankRepository.findUserBankByBank_IdAndUser_Id(user.getId(), bank.getId());
+        if (alreadyExists != null) {
+            throw new BadRequestException("O usuário já está vinculado a esse banco.");
+        }
+
+        UserBank userBank = UserBank.builder()
+                .bank(bank)
+                .user(user)
+                .totalAmount(dto.getTotalAmount())
+                .name(dto.getName())
+                .build();
+        return new UserBankDTO(userBankRepository.saveAndFlush(userBank));
+    }
+
+    public Boolean deleteUserBankById(Long id) {
+        UserBank userBank = userBankRepository.findById(id).orElse(null);
+        if (userBank == null) {
+            throw new NotFoundException("Vínculo não encontrado.");
+        }
+        userBankRepository.delete(userBank);
+        return true;
     }
 
 }
