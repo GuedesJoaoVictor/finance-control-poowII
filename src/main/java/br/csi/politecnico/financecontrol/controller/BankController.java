@@ -132,6 +132,16 @@ public class BankController {
     }
 
     @PostMapping("/vinculate/by/user/{uuid}")
+    @Operation(summary = "Vincula um banco a um usuário", description = "Recebe o id do usuário e o id do banco pela url para vincular o banco ao usuário.")
+    @Parameters(value = {
+            @Parameter(name = "uuid", description = "UUid único do usuário", required = true),
+            @Parameter(name = "dto", description = "DTO de banco com nome e tipo", required = true)
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Vinculado com sucesso!", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserBankDTO.class))),
+            @ApiResponse(responseCode = "400", description = "A entidade já existe ou os campos não foram informados.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor, mensagem do erro", content = @Content)
+    })
     public ResponseEntity<ResponseDTO<UserBankDTO>> vinculateUserBank(@PathVariable String uuid, @RequestBody UserBankDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok("Vinculado com sucesso!", bankService.vinculateUserBank(uuid, dto)));
@@ -144,6 +154,13 @@ public class BankController {
     }
 
     @DeleteMapping("/delete/user-bank/by/{id}")
+    @Operation(summary = "Deleta o vinculo do banco com o usuário", description = "Recebe o id do vinculo pela url para deletar o vinculo.")
+    @Parameter(name = "id", description = "ID único do vinculo", required = true)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vinculo excluido com sucesso!", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Vinculo não encontrado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content)
+    })
     public ResponseEntity<ResponseDTO<Boolean>> deleteUserBankById(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Deletado com sucesso!", bankService.deleteUserBankById(id)));
