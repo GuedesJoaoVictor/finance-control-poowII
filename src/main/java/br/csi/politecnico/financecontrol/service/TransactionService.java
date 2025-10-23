@@ -229,4 +229,25 @@ public class TransactionService {
         return true;
     }
 
+    public List<ExpenseDTO> findAllExpensesByUserUuid(String uuid) {
+        List<Expense> expenses = expenseRepository.findAllByUser_Uuid(UUID.fromString(uuid));
+        if (expenses.isEmpty()) {
+            throw new BadRequestException("Nenhuma despesa encontrada.");
+        }
+        List<ExpenseDTO> dtos = new ArrayList<>();
+        for (Expense expense : expenses) {
+            ExpenseDTO dto = ExpenseDTO.builder()
+                    .id(expense.getId())
+                    .user(new UserDTO(expense.getUser()))
+                    .bank(new BankDTO(expense.getBank()))
+                    .category(new CategoryDTO(expense.getCategory()))
+                    .value(expense.getValue())
+                    .description(expense.getDescription())
+                    .expenseDate(expense.getExpenseDate())
+                    .build();
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
 }

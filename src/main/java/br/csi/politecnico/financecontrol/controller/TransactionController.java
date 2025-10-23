@@ -87,7 +87,7 @@ public class TransactionController {
         }
     }
 
-    @PutMapping("/update/revenue/{id}")
+    @PatchMapping("/update/revenue/{id}")
     @Operation(summary = "Atualiza uma transação de receita pelo id", description = "Atualiza uma transação de receita pelo id")
     @Parameters(value = {
             @Parameter(name = "revenue", description = "DTO de receita com valor e data"),
@@ -217,6 +217,25 @@ public class TransactionController {
     public ResponseEntity<ResponseDTO<Boolean>> deleteExpenseById(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Despesa deletada com sucesso!", transactionService.deleteExpenseById(id)));
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/find-all/expense/by/user/{uuid}")
+    @Operation(summary = "Busca todas as transações de despesa por usuário", description = "Retorna uma lista de todas as transações de despesa por usuário")
+    @Parameter(name = "uuid", description = "UUid único do usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de despesas", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExpenseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Nenhuma despesa encontrada", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content)
+    })
+    public ResponseEntity<ResponseDTO<List<ExpenseDTO>>> findAllExpenseByUser(@PathVariable String uuid) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(transactionService.findAllExpensesByUserUuid(uuid)));
         } catch (BadRequestException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(e.getMessage()));
         } catch (Exception e) {
