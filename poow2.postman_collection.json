@@ -1,0 +1,954 @@
+{
+	"info": {
+		"_postman_id": "a8eb5208-8ec2-437a-a18f-340394c85bb7",
+		"name": "poow2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36522647",
+		"_collection_link": "https://time-que-eu-nao-queria-cirar.postman.co/workspace/Team-Workspace~c5b4c2b6-de86-44c4-8a42-0206432ac082/collection/36522647-a8eb5208-8ec2-437a-a18f-340394c85bb7?action=share&source=collection_link&creator=36522647"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cpf\": \"052.652.950-46\",\n    \"name\": \"João Guedes\",\n    \"email\": \"guedes@email.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"guedes@email.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"joao@email.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bank",
+			"item": [
+				{
+					"name": "find-all banks",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/bank/find-all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank",
+								"find-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Banco do Brasil\",\n    \"type\": \"Banco físico, completo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/bank",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/bank/find-by-id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank",
+								"find-by-id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Banco Nubank\",\n    \"type\": \"Banco novo id\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/bank/update-by-id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank",
+								"update-by-id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/bank/delete-by-id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank",
+								"delete-by-id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vinculate bank",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Conta corrente BB\",\n    \"totalAmount\": 500.00,\n    \"user\": null,\n    \"bank\": {\n        \"id\": 2\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/bank/vinculate/by/user/b94304a2-7bd6-4d21-95ea-916482f2d7fb",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank",
+								"vinculate",
+								"by",
+								"user",
+								"b94304a2-7bd6-4d21-95ea-916482f2d7fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete userbank by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/bank/delete/user-bank/by/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bank",
+								"delete",
+								"user-bank",
+								"by",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "find all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/category/find-all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"category",
+								"find-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all by user uuid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/category/find-all-by-user/b94304a2-7bd6-4d21-95ea-916482f2d7fb",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"category",
+								"find-all-by-user",
+								"b94304a2-7bd6-4d21-95ea-916482f2d7fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-by-user-uuid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Netflix\",\n    \"type\": \"Lazer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/category/create-by-user-uuid/b94304a2-7bd6-4d21-95ea-916482f2d7fb",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"category",
+								"create-by-user-uuid",
+								"b94304a2-7bd6-4d21-95ea-916482f2d7fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-by-id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/category/delete-by-id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"category",
+								"delete-by-id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-by-id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token atual}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/category/update-by-id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"category",
+								"update-by-id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Revenue",
+					"item": [
+						{
+							"name": "create revenue",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"description\": \"Salario\",\n    \"value\": 700.00,\n    \"user\": {\n        \"id\": 1\n    },\n    \"category\": {\n        \"id\": 1\n    },\n    \"bank\": {\n        \"id\": 2\n    },\n    \"receiptDate\": \"2025-10-24\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/transaction/create/revenue",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"create",
+										"revenue"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAll Revenues",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/transaction/find-all/revenues",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"find-all",
+										"revenues"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find revenue by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/transaction/find-revenue/by/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"find-revenue",
+										"by",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update revenue by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1,\n    \"description\": \"Salario ne amorrr\",\n    \"value\": 700.00,\n    \"user\": {\n        \"id\": 1,\n        \"uuid\": \"b94304a2-7bd6-4d21-95ea-916482f2d7fb\",\n        \"cpf\": \"052.652.950-46\",\n        \"name\": \"João Guedes\",\n        \"email\": \"guedes@email.com\",\n        \"password\": \"$2a$10$qSDXUJ3FIUuX6sdXJKusv.O5dPOMr6/1TURZ6QKyACP52Ds5/JMLG\",\n        \"userBanks\": []\n    },\n    \"category\": {\n        \"id\": 1,\n        \"type\": \"Lazer\",\n        \"name\": \"Netflix\",\n        \"user\": {\n            \"id\": 1,\n            \"uuid\": \"b94304a2-7bd6-4d21-95ea-916482f2d7fb\",\n            \"cpf\": \"052.652.950-46\",\n            \"name\": \"João Guedes\",\n            \"email\": \"guedes@email.com\",\n            \"password\": \"$2a$10$qSDXUJ3FIUuX6sdXJKusv.O5dPOMr6/1TURZ6QKyACP52Ds5/JMLG\",\n            \"userBanks\": []\n        }\n    },\n    \"bank\": {\n        \"id\": 2,\n        \"name\": \"Banco do Brasil\",\n        \"type\": \"Banco físico, completo\",\n        \"userBanks\": []\n    },\n    \"receiptDate\": \"2025-10-24\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/transaction/update/revenue/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"update",
+										"revenue",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete revenue by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/transaction/delete/revenue/by/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"delete",
+										"revenue",
+										"by",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find all revenue by user uuid",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/transaction/find-all/revenue/by/user/b94304a2-7bd6-4d21-95ea-916482f2d7fb",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"find-all",
+										"revenue",
+										"by",
+										"user",
+										"b94304a2-7bd6-4d21-95ea-916482f2d7fb"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Expense",
+					"item": [
+						{
+							"name": "find all expenses",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/transaction/find-all/expenses",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"find-all",
+										"expenses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create expense",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"description\": \"Namorada\",\n    \"value\": 700.00,\n    \"user\": {\n        \"id\": 1\n    },\n    \"category\": {\n        \"id\": 1\n    },\n    \"bank\": {\n        \"id\": 2\n    },\n    \"expenseDate\": \"2025-10-24\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/transaction/create/expense",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"create",
+										"expense"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update expense by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"description\": \"Namorada neee\",\n    \"value\": 700.00,\n    \"user\": {\n        \"id\": 1\n    },\n    \"category\": {\n        \"id\": 1\n    },\n    \"bank\": {\n        \"id\": 2\n    },\n    \"expenseDate\": \"2025-10-24\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/transaction/update/expense/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"update",
+										"expense",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete expense by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/transaction/delete/expense/by/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"delete",
+										"expense",
+										"by",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find all expenses by user uuid",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Token atual}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/transaction/find-all/expense/by/user/b94304a2-7bd6-4d21-95ea-916482f2d7fb",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"transaction",
+										"find-all",
+										"expense",
+										"by",
+										"user",
+										"b94304a2-7bd6-4d21-95ea-916482f2d7fb"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "Token atual",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
