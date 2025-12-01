@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/bank")
@@ -169,6 +170,16 @@ public class BankController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/find-all/vinculos/by/user/{uuid}")
+    public ResponseEntity<List<BankDTO>> findByAllUserBanksByUuid(@PathVariable() String uuid) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(bankService.findUserBankByUuid(uuid));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 }

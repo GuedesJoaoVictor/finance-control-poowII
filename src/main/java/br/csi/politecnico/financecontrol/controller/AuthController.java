@@ -1,9 +1,12 @@
 package br.csi.politecnico.financecontrol.controller;
 
 import br.csi.politecnico.financecontrol.dto.LoginFormDTO;
+import br.csi.politecnico.financecontrol.dto.ResponseDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.model.User;
+import br.csi.politecnico.financecontrol.repository.UserRepository;
+import br.csi.politecnico.financecontrol.security.JwtUtil;
 import br.csi.politecnico.financecontrol.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/auth")
 @RestController
@@ -25,9 +31,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, JwtUtil jwtUtil1, UserRepository userRepository) {
         this.authService = authService;
+        this.jwtUtil = jwtUtil1;
+        this.userRepository = userRepository;
     }
 
     @Operation(summary = "Loga o usuário via token", description = "Faz o login do usuário na plataforma")
@@ -39,15 +49,36 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Corpo do erro")
     })
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginFormDTO loginFormDTO) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginFormDTO loginFormDTO) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginFormDTO));
+            String token = authService.login(loginFormDTO);
+
+            String userId = jwtUtil.extractUsername(token);
+            String email = jwtUtil.extractEmail(token);
+            String name = jwtUtil.extractName(token);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("type", "Bearer");
+            response.put("user", Map.of(
+                    "id", userId,
+                    "email", email,
+                    "name", name
+            ));
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (BadRequestException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
@@ -59,12 +90,12 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Mensagem do erro"),
     })
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
+    public ResponseEntity<ResponseDTO<String>> register(@RequestBody User user) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(user));
+            return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok(authService.register(user)));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO.err(e.getMessage()));
         }
     }
 

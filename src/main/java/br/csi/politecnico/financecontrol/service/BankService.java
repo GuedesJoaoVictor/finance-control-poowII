@@ -145,4 +145,25 @@ public class BankService {
         return true;
     }
 
+    public List<BankDTO> findUserBankByUuid(String uuid) {
+        List<Bank> banks = userBankRepository.findALlBanksByUserUuid(UUID.fromString(uuid));
+
+        List<BankDTO> dtos = new ArrayList<>();
+        if (banks.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        for (Bank bank : banks) {
+            BankDTO dto = BankDTO.builder()
+                    .id(bank.getId())
+                    .name(bank.getName())
+                    .type(bank.getType())
+                    .build();
+
+            dtos.add(dto);
+        }
+
+        return dtos;
+    }
+
 }

@@ -11,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -41,15 +43,23 @@ public class AuthService {
     }
 
     public String login(LoginFormDTO loginFormDTO) {
-        User user = userRepository.findByEmail(loginFormDTO.getEmail()).
-                orElseThrow(() -> new NotFoundException("Usuário não existe"));
+        User user = userRepository.findByEmail(loginFormDTO.getEmail())
+                .orElseThrow(() -> new NotFoundException("Usuário não existe"));
 
         if (!passwordEncoder.matches(loginFormDTO.getPassword(), user.getPassword())) {
             throw new BadRequestException("Senha incorreta");
         }
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginFormDTO.getEmail(), loginFormDTO.getPassword()));
-        return jwtUtil.generateToken(loginFormDTO.getEmail());
-    }
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginFormDTO.getEmail(), loginFormDTO.getPassword())
+        );
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", user.getEmail());
+        claims.put("userId", user.getUuid().toString());
+        claims.put("name", user.getName());
+
+        // Gerar token com UUID como subject
+        return jwtUtil.generateToken(user.getUuid().toString(), claims);
+    }
 }
