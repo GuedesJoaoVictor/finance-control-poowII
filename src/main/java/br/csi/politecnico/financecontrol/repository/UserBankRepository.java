@@ -1,5 +1,6 @@
 package br.csi.politecnico.financecontrol.repository;
 
+import br.csi.politecnico.financecontrol.dto.BankDTO;
 import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.model.UserBank;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,10 +14,14 @@ public interface UserBankRepository extends JpaRepository<UserBank, Long> {
     UserBank findUserBankByBank_IdAndUser_Id(Long bankId, Long userId);
 
     @Query(nativeQuery = true, value = """
-        SELECT b.* FROM bank b 
+        SELECT b.id as id,
+        b.name as name,
+        b.type as type,
+        ub.id as vinculoId
+           FROM bank b 
         JOIN user_bank ub ON ub.bank_id = b.id
         JOIN users u ON u.id = ub.user_id
         WHERE u.uuid = :uuid
     """)
-    List<Bank> findALlBanksByUserUuid(UUID uuid);
+    List<BankDTO> findALlBanksByUserUuid(UUID uuid);
 }

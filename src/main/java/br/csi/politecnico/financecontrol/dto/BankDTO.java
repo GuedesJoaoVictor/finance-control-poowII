@@ -8,12 +8,13 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class BankDTO {
-    private Long id;
+    private Integer id;
     private String name;
     private String type;
+    private Integer vinculoId;
 
     public BankDTO(Bank bank) {
-        this.id = bank.getId();
+        this.id = Math.toIntExact(bank.getId());
         this.name = bank.getName();
         this.type = bank.getType();
     }

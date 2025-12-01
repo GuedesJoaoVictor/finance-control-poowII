@@ -53,7 +53,7 @@ public class TransactionService {
         if (user == null) {
             throw new BadRequestException("Usuário não encontrado.");
         }
-        Bank bank = bankRepository.findById(revenue.getBank().getId()).orElse(null);
+        Bank bank = bankRepository.findById(Long.valueOf(revenue.getBank().getId())).orElse(null);
         if (bank == null) {
             throw new BadRequestException("Banco não encontrado.");
         }
@@ -97,7 +97,7 @@ public class TransactionService {
         if (revenueEntity == null) {
             throw new BadRequestException("Transação não encontrada.");
         }
-        Bank bank = bankRepository.findById(revenue.getBank().getId()).orElse(null);
+        Bank bank = bankRepository.findById(Long.valueOf(revenue.getBank().getId())).orElse(null);
         if (bank == null) {
             throw new BadRequestException("Banco não encontrado.");
         }
@@ -173,7 +173,7 @@ public class TransactionService {
         if (user == null) {
             throw new BadRequestException("Usuário não encontrado.");
         }
-        Bank bank = bankRepository.findById(expense.getBank().getId()).orElse(null);
+        Bank bank = bankRepository.findById(Long.valueOf(expense.getBank().getId())).orElse(null);
         if (bank == null) {
             throw new BadRequestException("Banco não encontrado.");
         }
@@ -200,7 +200,7 @@ public class TransactionService {
         if (expenseEntity == null) {
             throw new BadRequestException("Despesa não encontrada.");
         }
-        Bank bank = bankRepository.findById(expense.getBank().getId()).orElse(null);
+        Bank bank = bankRepository.findById(Long.valueOf(expense.getBank().getId())).orElse(null);
         if (bank == null) {
             throw new BadRequestException("Banco não encontrado.");
         }

@@ -64,7 +64,7 @@ public class BankService {
 
         for (Bank bank : banks) {
             BankDTO dto = BankDTO.builder()
-                    .id(bank.getId())
+                    .id(Math.toIntExact(bank.getId()))
                     .name(bank.getName())
                     .type(bank.getType())
                     .build();
@@ -79,7 +79,7 @@ public class BankService {
         if (bank.isPresent()) {
             Bank bankEntity = bank.get();
             return BankDTO.builder()
-                    .id(bankEntity.getId())
+                    .id(Math.toIntExact(bankEntity.getId()))
                     .name(bankEntity.getName())
                     .type(bankEntity.getType())
                     .build();
@@ -118,7 +118,7 @@ public class BankService {
         if (user == null) {
             throw new NotFoundException("Usuário não encontrado.");
         }
-        Bank bank = bankRepository.findById(dto.getBank().getId()).orElse(null);
+        Bank bank = bankRepository.findById(Long.valueOf(dto.getBank().getId())).orElse(null);
         if (bank == null) {
             throw new NotFoundException("Banco não encontrado.");
         }
@@ -146,24 +146,13 @@ public class BankService {
     }
 
     public List<BankDTO> findUserBankByUuid(String uuid) {
-        List<Bank> banks = userBankRepository.findALlBanksByUserUuid(UUID.fromString(uuid));
+        List<BankDTO> banks = userBankRepository.findALlBanksByUserUuid(UUID.fromString(uuid));
 
-        List<BankDTO> dtos = new ArrayList<>();
         if (banks.isEmpty()) {
             return Collections.emptyList();
         }
 
-        for (Bank bank : banks) {
-            BankDTO dto = BankDTO.builder()
-                    .id(bank.getId())
-                    .name(bank.getName())
-                    .type(bank.getType())
-                    .build();
-
-            dtos.add(dto);
-        }
-
-        return dtos;
+        return banks;
     }
 
 }
