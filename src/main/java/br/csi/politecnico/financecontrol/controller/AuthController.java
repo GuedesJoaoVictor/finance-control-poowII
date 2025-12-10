@@ -8,11 +8,6 @@ import br.csi.politecnico.financecontrol.model.User;
 import br.csi.politecnico.financecontrol.repository.UserRepository;
 import br.csi.politecnico.financecontrol.security.JwtUtil;
 import br.csi.politecnico.financecontrol.service.AuthService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,27 +22,16 @@ import java.util.Map;
 @Controller
 @RequestMapping("/auth")
 @RestController
-@Tag(name = "Auth", description = "Controller relacionado a registro, login e logout.")
 public class AuthController {
 
     private final AuthService authService;
     private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
 
     public AuthController(AuthService authService, JwtUtil jwtUtil1, UserRepository userRepository) {
         this.authService = authService;
         this.jwtUtil = jwtUtil1;
-        this.userRepository = userRepository;
     }
 
-    @Operation(summary = "Loga o usuário via token", description = "Faz o login do usuário na plataforma")
-    @Parameter(name = "loginFormDTO", description = "Email e senha do usuário", required = true)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna o token de login"),
-            @ApiResponse(responseCode = "404", description = "Usuário não existe"),
-            @ApiResponse(responseCode = "400", description = "Senha incorreta"),
-            @ApiResponse(responseCode = "500", description = "Corpo do erro")
-    })
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginFormDTO loginFormDTO) {
         try {
@@ -82,13 +66,6 @@ public class AuthController {
         }
     }
 
-    @Operation(summary = "Registrar usuário", description = "Registra usuários no banco de dados")
-    @Parameter(name = "user", description = "Cpf, nome, email e senha do usuário", required = true)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuário cadastado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Usuário já existente"),
-            @ApiResponse(responseCode = "400", description = "Mensagem do erro"),
-    })
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO<String>> register(@RequestBody User user) {
         try {

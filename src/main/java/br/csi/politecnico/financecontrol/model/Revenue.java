@@ -18,6 +18,5 @@ import lombok.experimental.SuperBuilder;
 @Data
 public class Revenue extends Transaction {
     @Column(name = "receipt_date", nullable = false)
-    @Schema(description = "Momento em que foi feita a renda", example = "07/04/2004")
     private LocalDate receiptDate = LocalDate.now();
 }
