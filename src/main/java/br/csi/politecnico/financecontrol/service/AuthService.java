@@ -32,12 +32,17 @@ public class AuthService {
     }
 
     public String register(User user) {
-        Optional<User> alreadExists = userRepository.findByEmail(user.getEmail());
-        if (alreadExists.isPresent()) {
+        Optional<User> alreadyExists = userRepository.findByEmail(user.getEmail());
+        if (alreadyExists.isPresent()) {
             throw new BadRequestException("Usuário já existente");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getRole().equals("ADMIN")) {
+            user.setRole(user.getRole());
+        } else {
+            user.setRole("USER");
+        }
         userRepository.save(user);
         return "Usuário cadastrado com sucesso!";
     }

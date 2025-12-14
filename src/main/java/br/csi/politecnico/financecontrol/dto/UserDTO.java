@@ -19,6 +19,7 @@ public class UserDTO {
     private String name;
     private String email;
     private String password;
+    private String role;
 
     public UserDTO (User user) {
         this.id = user.getId();
@@ -26,5 +27,6 @@ public class UserDTO {
         this.cpf = user.getCpf();
         this.name = user.getName();
         this.email = user.getEmail();
+        this.role = user.getRole();
     }
 }
