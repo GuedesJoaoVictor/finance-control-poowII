@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,7 +39,7 @@ public class AuthService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user.getRole().equals("ADMIN")) {
+        if (Objects.nonNull(user.getRole()) && user.getRole().equals("ADMIN")) {
             user.setRole(user.getRole());
         } else {
             user.setRole("USER");

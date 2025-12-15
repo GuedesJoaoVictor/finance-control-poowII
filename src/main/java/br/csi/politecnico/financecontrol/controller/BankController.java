@@ -9,6 +9,7 @@ import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.service.BankService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class BankController {
         }
     }
 
+    @Secured({"ROLE_ADMIN"})
     @GetMapping("/find-all")
     public ResponseEntity<ResponseDTO<List<BankDTO>>> findAllBanks() {
         try {
