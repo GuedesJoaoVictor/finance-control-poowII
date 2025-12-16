@@ -62,8 +62,9 @@ public class AuthService {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", user.getEmail());
-        claims.put("userId", user.getUuid().toString());
+        claims.put("uuid", user.getUuid().toString());
         claims.put("name", user.getName());
+        claims.put("role", user.getRole());
 
         // Gerar token com UUID como subject
         return jwtUtil.generateToken(user.getUuid().toString(), claims);

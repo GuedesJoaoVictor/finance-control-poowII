@@ -37,17 +37,19 @@ public class AuthController {
         try {
             String token = authService.login(loginFormDTO);
 
-            String userId = jwtUtil.extractUsername(token);
+            String uuid = jwtUtil.extractUserUuid(token);
             String email = jwtUtil.extractEmail(token);
             String name = jwtUtil.extractName(token);
+            String role = jwtUtil.extractRole(token);
 
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("type", "Bearer");
             response.put("user", Map.of(
-                    "id", userId,
+                    "uuid", uuid,
                     "email", email,
-                    "name", name
+                    "name", name,
+                    "role", role
             ));
 
             return ResponseEntity.status(HttpStatus.OK).body(response);

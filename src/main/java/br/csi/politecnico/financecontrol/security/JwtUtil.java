@@ -46,12 +46,16 @@ public class JwtUtil {
         return (String) parseClaims(token).getBody().get("email");
     }
 
-    public String extractUserId(String token) {
-        return (String) parseClaims(token).getBody().get("userId");
+    public String extractUserUuid(String token) {
+        return (String) parseClaims(token).getBody().get("uuid");
     }
 
     public String extractName(String token) {
         return (String) parseClaims(token).getBody().get("name");
+    }
+
+    public String extractRole(String token) {
+        return (String) parseClaims(token).getBody().get("role");
     }
 
     public boolean validateToken(String token) {
