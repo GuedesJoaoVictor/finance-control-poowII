@@ -58,6 +58,10 @@ public class JwtUtil {
         return (String) parseClaims(token).getBody().get("role");
     }
 
+    public String extractUserCpf(String token) {
+        return (String) parseClaims(token).getBody().get("cpf");
+    }
+
     public boolean validateToken(String token) {
         try {
             parseClaims(token);

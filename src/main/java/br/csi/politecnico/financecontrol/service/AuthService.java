@@ -61,6 +61,7 @@ public class AuthService {
         );
 
         Map<String, Object> claims = new HashMap<>();
+        claims.put("cpf", user.getCpf());
         claims.put("email", user.getEmail());
         claims.put("uuid", user.getUuid().toString());
         claims.put("name", user.getName());

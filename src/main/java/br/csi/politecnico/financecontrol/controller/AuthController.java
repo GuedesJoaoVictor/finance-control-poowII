@@ -38,6 +38,7 @@ public class AuthController {
             String token = authService.login(loginFormDTO);
 
             String uuid = jwtUtil.extractUserUuid(token);
+            String cpf = jwtUtil.extractUserCpf(token);
             String email = jwtUtil.extractEmail(token);
             String name = jwtUtil.extractName(token);
             String role = jwtUtil.extractRole(token);
@@ -47,6 +48,7 @@ public class AuthController {
             response.put("type", "Bearer");
             response.put("user", Map.of(
                     "uuid", uuid,
+                    "cpf", cpf,
                     "email", email,
                     "name", name,
                     "role", role
