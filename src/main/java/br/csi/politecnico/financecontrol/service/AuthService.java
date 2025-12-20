@@ -35,7 +35,7 @@ public class AuthService {
     public String register(User user) {
         Optional<User> alreadyExists = userRepository.findByEmail(user.getEmail());
         if (alreadyExists.isPresent()) {
-            throw new BadRequestException("Usuário já existente");
+            throw new BadRequestException("User already exists");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -45,12 +45,12 @@ public class AuthService {
             user.setRole("USER");
         }
         userRepository.save(user);
-        return "Usuário cadastrado com sucesso!";
+        return "User registered successfully!";
     }
 
     public String login(LoginFormDTO loginFormDTO) {
         User user = userRepository.findByEmail(loginFormDTO.getEmail())
-                .orElseThrow(() -> new NotFoundException("Usuário não existe"));
+                .orElseThrow(() -> new NotFoundException("User does not exist"));
 
         if (!passwordEncoder.matches(loginFormDTO.getPassword(), user.getPassword())) {
             throw new BadRequestException("Senha incorreta");
