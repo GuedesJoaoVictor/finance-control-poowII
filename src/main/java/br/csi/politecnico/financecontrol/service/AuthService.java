@@ -53,7 +53,7 @@ public class AuthService {
                 .orElseThrow(() -> new NotFoundException("User does not exist"));
 
         if (!passwordEncoder.matches(loginFormDTO.getPassword(), user.getPassword())) {
-            throw new BadRequestException("Senha incorreta");
+            throw new BadRequestException("Wrong password");
         }
 
         authenticationManager.authenticate(
