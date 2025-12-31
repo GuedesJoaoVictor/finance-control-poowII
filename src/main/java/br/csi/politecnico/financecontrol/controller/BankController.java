@@ -41,14 +41,14 @@ public class BankController {
 
     @Secured({"ROLE_ADMIN"})
     @GetMapping("/find-all")
-    public ResponseEntity<ResponseDTO<List<BankDTO>>> findAllBanks() {
+    public ResponseEntity<List<BankDTO>> findAllBanks() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(bankService.findAll()));
+            return ResponseEntity.status(HttpStatus.OK).body(bankService.findAll());
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
