@@ -6,6 +6,8 @@ import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.EntityExistsException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
 import br.csi.politecnico.financecontrol.service.CategoryService;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,7 +38,7 @@ public class CategoryController {
     }
 
     @GetMapping("/find-all-by-user/{uuid}")
-    public ResponseEntity<ResponseDTO<List<CategoryDTO>>> findAllByUser(@PathVariable String uuid) {
+    public ResponseEntity<ResponseDTO<List<CategoryDTO>>> findAllByUser(@PathVariable @Valid String uuid) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(service.findAllByUser(uuid)));
         } catch (NotFoundException e) {
@@ -47,7 +49,7 @@ public class CategoryController {
     }
 
     @PostMapping("/create-by-user-uuid/{uuid}")
-    public ResponseEntity<ResponseDTO<CategoryDTO>> createByUserUuid(@PathVariable String uuid, @RequestBody CategoryDTO dto) {
+    public ResponseEntity<ResponseDTO<CategoryDTO>> createByUserUuid(@PathVariable @Valid String uuid, @RequestBody @Valid CategoryDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok("Categoria criada com sucesso!", service.createByUserUuid(uuid, dto)));
         } catch (BadRequestException | EntityExistsException e) {
@@ -58,7 +60,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete-by-id/{id}")
-    public ResponseEntity<ResponseDTO<Boolean>> deleteById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<Boolean>> deleteById(@PathVariable @Valid Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Deletado com sucesso!", service.deleteById(id)));
         } catch (NotFoundException e) {
@@ -69,7 +71,7 @@ public class CategoryController {
     }
 
     @PatchMapping("/update-by-id/{id}")
-    public ResponseEntity<ResponseDTO<CategoryDTO>> updateById(@PathVariable("id") Long categoryId, @RequestBody CategoryDTO dto) {
+    public ResponseEntity<ResponseDTO<CategoryDTO>> updateById(@PathVariable("id") @Valid Long categoryId, @RequestBody @Valid CategoryDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Atualizado com sucesso!", service.updateById(categoryId, dto)));
         } catch (NotFoundException e) {

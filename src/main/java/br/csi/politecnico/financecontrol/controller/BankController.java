@@ -5,8 +5,9 @@ import br.csi.politecnico.financecontrol.dto.ResponseDTO;
 import br.csi.politecnico.financecontrol.dto.UserBankDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.exception.NotFoundException;
-import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.service.BankService;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/bank")
@@ -28,7 +28,7 @@ public class BankController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDTO<String>> createBank(@RequestBody BankDTO dto) {
+    public ResponseEntity<ResponseDTO<String>> createBank(@RequestBody @Valid BankDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok(bankService.create(dto)));
         } catch (BadRequestException ex) {
@@ -53,7 +53,7 @@ public class BankController {
     }
 
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<ResponseDTO<BankDTO>> findBankById(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseDTO<BankDTO>> findBankById(@PathVariable("id") @Valid Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(bankService.findById(id)));
         } catch (NotFoundException e) {
@@ -65,7 +65,7 @@ public class BankController {
     }
 
     @PatchMapping("/update-by-id/{id}")
-    public ResponseEntity<ResponseDTO<BankDTO>> updateBank(@RequestBody BankDTO dto, @PathVariable("id") Long id) {
+    public ResponseEntity<ResponseDTO<BankDTO>> updateBank(@RequestBody @Valid BankDTO dto, @PathVariable("id") @Valid Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Atualizado com sucesso!", bankService.update(id, dto)));
         } catch (NotFoundException e) {
@@ -77,7 +77,7 @@ public class BankController {
     }
 
     @DeleteMapping("/delete-by-id/{id}")
-    public ResponseEntity<String> deleteBankById(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteBankById(@PathVariable("id") @Valid Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(bankService.deleteById(id));
         } catch (NotFoundException e) {
@@ -89,7 +89,7 @@ public class BankController {
     }
 
     @PostMapping("/vinculate/by/user/{uuid}")
-    public ResponseEntity<ResponseDTO<UserBankDTO>> vinculateUserBank(@PathVariable String uuid, @RequestBody UserBankDTO dto) {
+    public ResponseEntity<ResponseDTO<UserBankDTO>> vinculateUserBank(@PathVariable @Valid String uuid, @RequestBody @Valid UserBankDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok("Vinculado com sucesso!", bankService.vinculateUserBank(uuid, dto)));
         } catch (BadRequestException | NotFoundException e) {
@@ -101,7 +101,7 @@ public class BankController {
     }
 
     @DeleteMapping("/delete/user-bank/by/{id}")
-    public ResponseEntity<ResponseDTO<Boolean>> deleteUserBankById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<Boolean>> deleteUserBankById(@PathVariable @Valid Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Deletado com sucesso!", bankService.deleteUserBankById(id)));
         } catch (NotFoundException e) {
@@ -113,7 +113,7 @@ public class BankController {
     }
 
     @GetMapping("/find-all/vinculos/by/user/{uuid}")
-    public ResponseEntity<List<BankDTO>> findByAllUserBanksByUuid(@PathVariable() String uuid) {
+    public ResponseEntity<List<BankDTO>> findByAllUserBanksByUuid(@PathVariable() @Valid String uuid) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(bankService.findUserBankByUuid(uuid));
         } catch (Exception e) {

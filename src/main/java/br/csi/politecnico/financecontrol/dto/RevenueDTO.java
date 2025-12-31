@@ -1,7 +1,6 @@
 package br.csi.politecnico.financecontrol.dto;
 
 import br.csi.politecnico.financecontrol.model.Revenue;
-import br.csi.politecnico.financecontrol.model.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

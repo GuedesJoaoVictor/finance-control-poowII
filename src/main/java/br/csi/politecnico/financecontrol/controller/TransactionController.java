@@ -5,6 +5,8 @@ import br.csi.politecnico.financecontrol.dto.ResponseDTO;
 import br.csi.politecnico.financecontrol.dto.RevenueDTO;
 import br.csi.politecnico.financecontrol.exception.BadRequestException;
 import br.csi.politecnico.financecontrol.service.TransactionService;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,7 @@ public class TransactionController {
     }
 
     @PostMapping("/create/revenue")
-    public ResponseEntity<ResponseDTO<RevenueDTO>> createRevenue(@RequestBody RevenueDTO revenue) {
+    public ResponseEntity<ResponseDTO<RevenueDTO>> createRevenue(@RequestBody @Valid RevenueDTO revenue) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok("Receita criada com sucesso!", transactionService.createRevenue(revenue)));
         } catch (BadRequestException e) {
@@ -47,7 +49,7 @@ public class TransactionController {
     }
 
     @GetMapping("/find-revenue/by/{id}")
-    public ResponseEntity<ResponseDTO<RevenueDTO>> findRevenueById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<RevenueDTO>> findRevenueById(@PathVariable @Valid Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(transactionService.findRevenueById(id)));
         } catch (BadRequestException e) {
@@ -59,7 +61,7 @@ public class TransactionController {
     }
 
     @PatchMapping("/update/revenue/{id}")
-    public ResponseEntity<ResponseDTO<RevenueDTO>> updateRevenue(@PathVariable Long id, @RequestBody RevenueDTO revenue) {
+    public ResponseEntity<ResponseDTO<RevenueDTO>> updateRevenue(@PathVariable @Valid Long id, @RequestBody @Valid RevenueDTO revenue) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Receita atualizada com sucesso!", transactionService.updateRevenueById(id, revenue)));
         } catch (BadRequestException e) {
@@ -71,7 +73,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/delete/revenue/by/{id}")
-    public ResponseEntity<ResponseDTO<Boolean>> deleteRevenueById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<Boolean>> deleteRevenueById(@PathVariable @Valid Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Receita deletada com sucesso!", transactionService.deleteRevenueById(id)));
         } catch (BadRequestException e) {
@@ -83,7 +85,7 @@ public class TransactionController {
     }
 
     @GetMapping("/find-all/revenue/by/user/{uuid}")
-    public ResponseEntity<ResponseDTO<List<RevenueDTO>>> findAllRevenueByUser(@PathVariable String uuid) {
+    public ResponseEntity<ResponseDTO<List<RevenueDTO>>> findAllRevenueByUser(@PathVariable @Valid String uuid) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(transactionService.findAllRevenueByUserUuid(uuid)));
         } catch (BadRequestException e) {
@@ -107,7 +109,7 @@ public class TransactionController {
     }
 
     @PostMapping("/create/expense")
-    public ResponseEntity<ResponseDTO<ExpenseDTO>> createExpense(@RequestBody ExpenseDTO expense) {
+    public ResponseEntity<ResponseDTO<ExpenseDTO>> createExpense(@RequestBody @Valid ExpenseDTO expense) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok("Despesa criada com sucesso!", transactionService.createExpense(expense)));
         } catch (BadRequestException e) {
@@ -119,7 +121,7 @@ public class TransactionController {
     }
 
     @PatchMapping("/update/expense/{id}")
-    public ResponseEntity<ResponseDTO<ExpenseDTO>> updateExpense(@PathVariable Long id, @RequestBody ExpenseDTO expense) {
+    public ResponseEntity<ResponseDTO<ExpenseDTO>> updateExpense(@PathVariable @Valid Long id, @RequestBody @Valid ExpenseDTO expense) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Despesa atualizada com sucesso!", transactionService.updateExpenseById(id, expense)));
         } catch (BadRequestException e) {
@@ -131,7 +133,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/delete/expense/by/{id}")
-    public ResponseEntity<ResponseDTO<Boolean>> deleteExpenseById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<Boolean>> deleteExpenseById(@PathVariable @Valid Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok("Despesa deletada com sucesso!", transactionService.deleteExpenseById(id)));
         } catch (BadRequestException e) {
@@ -143,7 +145,7 @@ public class TransactionController {
     }
 
     @GetMapping("/find-all/expense/by/user/{uuid}")
-    public ResponseEntity<ResponseDTO<List<ExpenseDTO>>> findAllExpenseByUser(@PathVariable String uuid) {
+    public ResponseEntity<ResponseDTO<List<ExpenseDTO>>> findAllExpenseByUser(@PathVariable @Valid String uuid) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.ok(transactionService.findAllExpensesByUserUuid(uuid)));
         } catch (BadRequestException e) {

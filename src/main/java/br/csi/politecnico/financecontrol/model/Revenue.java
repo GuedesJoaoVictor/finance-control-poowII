@@ -2,7 +2,6 @@ package br.csi.politecnico.financecontrol.model;
 
 import java.time.LocalDate;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -17,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 public class Revenue extends Transaction {
+    @Builder.Default
     @Column(name = "receipt_date", nullable = false)
     private LocalDate receiptDate = LocalDate.now();
 }

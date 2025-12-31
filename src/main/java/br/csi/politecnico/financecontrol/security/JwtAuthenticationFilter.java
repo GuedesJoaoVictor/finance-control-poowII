@@ -40,13 +40,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
 
             try {
-                // Extrai o UUID do token (que agora é o subject)
                 String userId = jwtUtil.extractUsername(token);
-                username = jwtUtil.extractEmail(token); // Usa email para UserDetailsService
+                username = jwtUtil.extractEmail(token);
 
-                // Valida se o usuário existe pelo UUID
-                User user = userRepository.findByUuid(UUID.fromString(userId))
-                        .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+                User user = userRepository.findByUuid(UUID.fromString(userId)).orElse(null);
+                if (user == null) {
+                    throw new UsernameNotFoundException("User not found with UUID: " + userId);
+                }
 
             } catch (Exception e) {
                 logger.error("Erro ao validar token: " + e.getMessage());

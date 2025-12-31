@@ -1,7 +1,6 @@
 package br.csi.politecnico.financecontrol.repository;
 
 import br.csi.politecnico.financecontrol.dto.BankDTO;
-import br.csi.politecnico.financecontrol.model.Bank;
 import br.csi.politecnico.financecontrol.model.UserBank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
