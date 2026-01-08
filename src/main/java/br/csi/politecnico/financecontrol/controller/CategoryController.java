@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RestController
@@ -36,6 +39,16 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.err(e.getMessage()));
         }
     }
+
+    @PostMapping("create")
+    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO dto) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
 
     @GetMapping("/find-all-by-user/{uuid}")
     public ResponseEntity<ResponseDTO<List<CategoryDTO>>> findAllByUser(@PathVariable @Valid String uuid) {

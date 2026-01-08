@@ -1,0 +1,3 @@
+BEGIN;
+    ALTER TABLE public.category ALTER COLUMN user_id DROP NOT NULL;
+COMMIT;

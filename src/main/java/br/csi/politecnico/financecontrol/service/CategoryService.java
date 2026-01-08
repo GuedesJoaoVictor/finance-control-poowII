@@ -38,7 +38,7 @@ public class CategoryService {
         for (Category category : categories) {
             list.add(CategoryDTO.builder()
                     .id(category.getId())
-                    .user(new UserDTO(category.getUser()))
+                    .user(category.getUser() != null ? new UserDTO(category.getUser()) : null)
                     .name(category.getName())
                     .type(category.getType())
                     .build());
@@ -103,6 +103,17 @@ public class CategoryService {
         categoryRepository.saveAndFlush(category);
 
         return new CategoryDTO(category);
+    }
+
+    public CategoryDTO create(CategoryDTO dto) {
+        Category category = Category.builder()
+                .name(dto.getName())
+                .type(dto.getType())
+                .build();
+        categoryRepository.saveAndFlush(category);
+        dto.setId(category.getId());
+
+        return dto;
     }
 
 }

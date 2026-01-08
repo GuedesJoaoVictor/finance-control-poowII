@@ -20,6 +20,6 @@ public class CategoryDTO {
         this.id = category.getId();
         this.name = category.getName();
         this.type = category.getType();
-        this.user = new UserDTO(category.getUser());
+        this.user = category.getUser() != null ? new UserDTO(category.getUser()) : null;
     }
 }
