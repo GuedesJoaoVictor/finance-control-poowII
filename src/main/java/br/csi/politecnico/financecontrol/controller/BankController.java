@@ -27,8 +27,9 @@ public class BankController {
         this.bankService = bankService;
     }
 
+    @Secured({"ROLE_ADMIN"})
     @PostMapping
-    public ResponseEntity<ResponseDTO<String>> createBank(@RequestBody @Valid BankDTO dto) {
+    public ResponseEntity<ResponseDTO<BankDTO>> createBank(@RequestBody @Valid BankDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.ok(bankService.create(dto)));
         } catch (BadRequestException ex) {
@@ -64,6 +65,7 @@ public class BankController {
         }
     }
 
+    @Secured({"ROLE_ADMIN"})
     @PatchMapping("/update-by-id/{id}")
     public ResponseEntity<ResponseDTO<BankDTO>> updateBank(@RequestBody @Valid BankDTO dto, @PathVariable("id") @Valid Long id) {
         try {
@@ -76,6 +78,7 @@ public class BankController {
         }
     }
 
+    @Secured({"ROLE_ADMIN"})
     @DeleteMapping("/delete-by-id/{id}")
     public ResponseEntity<String> deleteBankById(@PathVariable("id") @Valid Long id) {
         try {

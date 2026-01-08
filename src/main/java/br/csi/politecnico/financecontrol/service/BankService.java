@@ -27,7 +27,7 @@ public class BankService {
         this.userBankRepository = userBankRepository;
     }
 
-    public String create(BankDTO dto) {
+    public BankDTO create(BankDTO dto) {
         Bank bank = bankRepository.findBankByName(dto.getName()).orElse(null);
         if (bank != null) {
             throw new BadRequestException("O banco já existe");
@@ -42,17 +42,14 @@ public class BankService {
                 .build();
         bankRepository.saveAndFlush(bank);
 
-        return "Banco criado com sucesso";
+        return new BankDTO(bank);
     }
 
     private boolean validateInputsBank(BankDTO dto) {
         if (dto.getName() == null || dto.getType() == null) {
             return true;
         }
-        if (dto.getName().isEmpty() || dto.getType().isEmpty()) {
-            return true;
-        }
-        return false;
+        return dto.getName().isEmpty() || dto.getType().isEmpty();
     }
 
     public List<BankDTO> findAll() {
@@ -108,6 +105,7 @@ public class BankService {
         bankRepository.saveAndFlush(bank);
 
         return BankDTO.builder()
+                .id(Math.toIntExact(bank.getId()))
                 .name(bank.getName())
                 .type(bank.getType())
                 .build();
