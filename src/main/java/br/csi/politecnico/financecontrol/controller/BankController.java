@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequestMapping("/bank")
@@ -115,7 +116,7 @@ public class BankController {
         }
     }
 
-    @GetMapping("/find-all/vinculos/by/user/{uuid}")
+    @GetMapping("/find-all/links/by/user/{uuid}")
     public ResponseEntity<List<BankDTO>> findByAllUserBanksByUuid(@PathVariable() @Valid String uuid) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(bankService.findUserBankByUuid(uuid));
@@ -124,4 +125,16 @@ public class BankController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+    @Secured({"ROLE_ADMIN"})
+    @GetMapping("/find-all/links")
+    public ResponseEntity<List<UserBankDTO>> findAllLinks() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(bankService.findAllLinks());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    
 }

@@ -153,4 +153,13 @@ public class BankService {
         return banks;
     }
 
+    public List<UserBankDTO> findAllLinks() {
+        List<UserBank> userBanks = userBankRepository.findAll();
+        List<UserBankDTO> dtos = new ArrayList<>();
+        for (UserBank userBank : userBanks) {
+            dtos.add(new UserBankDTO(userBank));
+        }
+        return dtos;
+    }
+
 }
